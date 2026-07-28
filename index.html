@@ -1,397 +1,381 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teclado Musical Virtual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      margin: 10px 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    #controls {
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    select, input[type="range"] {
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    #keyboard {
+      position: relative;
+      display: flex;
+      margin: 20px 0;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .key {
+      border: 1px solid #ccc;
+      border-radius: 0 0 5px 5px;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 10px;
+      box-sizing: border-box;
+      font-weight: bold;
+      transition: background-color 0.1s ease;
+    }
+
+    .white {
+      background: #fff;
+      width: 45px;
+      height: 180px;
+      margin: 0 1px;
+      z-index: 1;
+      color: #333;
+      font-size: 12px;
+    }
+
+    .white:hover, .white.active {
+      background: #e0e0e0;
+    }
+
+    .black {
+      background: #111;
+      color: #fff;
+      width: 28px;
+      height: 110px;
+      position: absolute;
+      top: 0;
+      right: -15px;
+      z-index: 10;
+      border-radius: 0 0 3px 3px;
+      font-size: 10px;
+      padding-bottom: 8px;
+      border: 1px solid #000;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .black:hover, .black.active {
+      background: #444;
+    }
+
+    #scales, #challenge {
+      margin-top: 20px;
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .scale-buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #333;
+      color: #fff;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    #challenge-message {
+      margin-top: 15px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #0056b3;
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="es"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Teclado Musical Virtual&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: Arial, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #f4f4f4;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1 {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 10px 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 24px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #333;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>#controls {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 15px 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>label {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #555;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>select, input[type="range"] {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>#keyboard {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 20px 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #222;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 4px 10px rgba(0,0,0,0.3);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.key {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #ccc;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 0 0 5px 5px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>user-select: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: flex-end;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: background-color 0.1s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.white {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 45px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 180px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 1px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #333;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.white:hover, .white.active {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #e0e0e0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.black {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #111;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 28px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height: 110px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>right: -15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>z-index: 10;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 0 0 3px 3px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #000;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 2px 2px 4px rgba(0,0,0,0.4);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.black:hover, .black.active {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #444;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>#scales, #challenge {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 600px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 2px 5px rgba(0,0,0,0.1);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.scale-buttons {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px 15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #333;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: background-color 0.2s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>button:hover {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background-color: #555;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>#challenge-message {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #0056b3;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Teclado Musical Virtual (2 Octavas)&lt;/h1&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="controls"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;label for="waveType"&gt;Forma de onda:&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;select id="waveType"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="sine"&gt;Senoidal&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="square"&gt;Cuadrada&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="triangle"&gt;Triangular&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="sawtooth"&gt;Dientes de sierra&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/select&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;label for="volume"&gt;Volumen:&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="range" id="volume" min="0" max="1" step="0.01" value="0.5"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="keyboard"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="scales"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Escalas Pentatónicas&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;&lt;strong&gt;Pentatónica Mayor:&lt;/strong&gt; 1 - 2 - 3 - 5 - 6 (Ejemplo en Do: C - D - E - G - A)&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;&lt;strong&gt;Pentatónica Menor:&lt;/strong&gt; 1 - ♭3 - 4 - 5 - ♭7 (Ejemplo en Do: C - E♭ - F - G - B♭)&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="scale-buttons"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="play-major"&gt;Reproducir Pentatónica Mayor (en C)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="play-minor"&gt;Reproducir Pentatónica Menor (en C)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="challenge"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Modo Desafío&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button id="start-challenge" style="background-color: #007bff;"&gt;Iniciar Desafío&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="scale-buttons" style="margin-top: 15px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="guess-major"&gt;Pentatónica Mayor&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="guess-minor"&gt;Pentatónica Menor&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p id="challenge-message"&gt;Presiona "Iniciar Desafío" para comenzar.&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const audioContext = new (window.AudioContext || window.webkitAudioContext)();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const gainNode = audioContext.createGain();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>gainNode.connect(audioContext.destination);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const waveTypeSelect = document.getElementById('waveType');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const volumeSlider = document.getElementById('volume');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const keyboard = document.getElementById('keyboard');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const notes = [</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'C3', freq: 130.81, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'C#3', freq: 138.59, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'D3', freq: 146.83, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'D#3', freq: 155.56, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'E3', freq: 164.81, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'F3', freq: 174.61, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'F#3', freq: 185.00, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'G3', freq: 196.00, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'G#3', freq: 207.65, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'A3', freq: 220.00, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'A#3', freq: 233.08, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'B3', freq: 246.94, type: 'white' },</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'C4', freq: 261.63, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'C#4', freq: 277.18, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'D4', freq: 293.66, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'D#4', freq: 311.13, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'E4', freq: 329.63, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'F4', freq: 349.23, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'F#4', freq: 369.99, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'G4', freq: 392.00, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'G#4', freq: 415.30, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'A4', freq: 440.00, type: 'white' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'A#4', freq: 466.16, type: 'black' },</p>
-<p class="p1"><span class="Apple-converted-space">      </span>{ note: 'B4', freq: 493.88, type: 'white' }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let lastWhiteKey = null;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>notes.forEach((n) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (n.type === 'white') {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const whiteKey = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>whiteKey.className = 'key white';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>whiteKey.dataset.freq = n.freq;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>whiteKey.textContent = n.note;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>keyboard.appendChild(whiteKey);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>lastWhiteKey = whiteKey;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else if (n.type === 'black' &amp;&amp; lastWhiteKey) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const blackKey = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>blackKey.className = 'key black';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>blackKey.dataset.freq = n.freq;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>blackKey.textContent = n.note;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>lastWhiteKey.appendChild(blackKey);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function playSound(freq) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (audioContext.state === 'suspended') {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>audioContext.resume();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const oscillator = audioContext.createOscillator();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const envelope = audioContext.createGain();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>oscillator.type = waveTypeSelect.value;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const now = audioContext.currentTime;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const currentVol = parseFloat(volumeSlider.value);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>envelope.gain.setValueAtTime(0, now);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>envelope.gain.linearRampToValueAtTime(currentVol, now + 0.02);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>envelope.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>oscillator.connect(envelope);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>envelope.connect(gainNode);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>oscillator.start(now);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>oscillator.stop(now + 0.6);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function playScale(scaleNotes) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>scaleNotes.forEach((note, index) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(!note) return;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>let key = keyboard.querySelector(`[data-freq="${note.freq}"]`);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (key) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>key.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; key.classList.remove('active'), 400);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>playSound(note.freq);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}, index * 500);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>keyboard.addEventListener('mousedown', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (e.target.classList.contains('key')) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const freq = parseFloat(e.target.dataset.freq);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>playSound(freq);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>volumeSlider.addEventListener('input', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gainNode.gain.value = e.target.value;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('play-major').addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const majorScale = [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'C3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'D3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'E3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'G3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'A3')</p>
-<p class="p1"><span class="Apple-converted-space">      </span>];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>playScale(majorScale);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('play-minor').addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const minorScale = [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'C3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'D#3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'F3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'G3'),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>notes.find(n =&gt; n.note === 'A#3')</p>
-<p class="p1"><span class="Apple-converted-space">      </span>];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>playScale(minorScale);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let score = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let currentChallenge = null;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('start-challenge').addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const randomScaleType = Math.random() &gt; 0.5 ? 'major' : 'minor';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const randomTonicIndex = Math.floor(Math.random() * 12);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const tonic = notes[randomTonicIndex];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (randomScaleType === 'major') {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>currentChallenge = {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: 'major',</p>
-<p class="p1"><span class="Apple-converted-space">          </span>scale: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>tonic,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 2],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 4],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 7],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 9]</p>
-<p class="p1"><span class="Apple-converted-space">          </span>]</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>currentChallenge = {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>type: 'minor',</p>
-<p class="p1"><span class="Apple-converted-space">          </span>scale: [</p>
-<p class="p1"><span class="Apple-converted-space">            </span>tonic,</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 3],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 5],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 7],</p>
-<p class="p1"><span class="Apple-converted-space">            </span>notes[randomTonicIndex + 10]</p>
-<p class="p1"><span class="Apple-converted-space">          </span>]</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>playScale(currentChallenge.scale);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const msg = document.getElementById('challenge-message');</p>
-<p class="p1"><span class="Apple-converted-space">      </span>msg.style.color = '#0056b3'; // Azul inicial</p>
-<p class="p1"><span class="Apple-converted-space">      </span>msg.textContent = `Escucha la escala e intenta adivinar si es Mayor o Menor.`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('guess-major').addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (!currentChallenge) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const msg = document.getElementById('challenge-message');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (currentChallenge.type === 'major') {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>score++;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.style.color = '#28a745'; // VERDE para acierto</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.textContent = `¡Correcto! Era una Pentatónica Mayor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.style.color = '#dc3545'; // ROJO para fallo</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.textContent = `Incorrecto. Era una Pentatónica Menor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>currentChallenge = null;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('guess-minor').addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (!currentChallenge) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const msg = document.getElementById('challenge-message');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (currentChallenge.type === 'minor') {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>score++;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.style.color = '#28a745'; // VERDE para acierto</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.textContent = `¡Correcto! Era una Pentatónica Menor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.style.color = '#dc3545'; // ROJO para fallo</p>
-<p class="p1"><span class="Apple-converted-space">        </span>msg.textContent = `Incorrecto. Era una Pentatónica Mayor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>currentChallenge = null;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1>Teclado Musical Virtual (2 Octavas)</h1>
+
+  <div id="controls">
+    <label for="waveType">Forma de onda:</label>
+    <select id="waveType">
+      <option value="sine">Senoidal</option>
+      <option value="square">Cuadrada</option>
+      <option value="triangle">Triangular</option>
+      <option value="sawtooth">Dientes de sierra</option>
+    </select>
+
+    <label for="volume">Volumen:</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <div id="keyboard"></div>
+
+  <div id="scales">
+    <h2>Escalas Pentatónicas</h2>
+    <p><strong>Pentatónica Mayor:</strong> 1 - 2 - 3 - 5 - 6 (Ejemplo en Do: C - D - E - G - A)</p>
+    <p><strong>Pentatónica Menor:</strong> 1 - ♭3 - 4 - 5 - ♭7 (Ejemplo en Do: C - E♭ - F - G - B♭)</p>
+
+    <div class="scale-buttons">
+      <button id="play-major">Reproducir Pentatónica Mayor (en C)</button>
+      <button id="play-minor">Reproducir Pentatónica Menor (en C)</button>
+    </div>
+  </div>
+
+  <div id="challenge">
+    <h2>Modo Desafío</h2>
+    <button id="start-challenge" style="background-color: #007bff;">Iniciar Desafío</button>
+    <div class="scale-buttons" style="margin-top: 15px;">
+      <button id="guess-major">Pentatónica Mayor</button>
+      <button id="guess-minor">Pentatónica Menor</button>
+    </div>
+    <p id="challenge-message">Presiona "Iniciar Desafío" para comenzar.</p>
+  </div>
+
+  <script>
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const gainNode = audioContext.createGain();
+    gainNode.connect(audioContext.destination);
+
+    const waveTypeSelect = document.getElementById('waveType');
+    const volumeSlider = document.getElementById('volume');
+    const keyboard = document.getElementById('keyboard');
+
+    const notes = [
+      { note: 'C3', freq: 130.81, type: 'white' },
+      { note: 'C#3', freq: 138.59, type: 'black' },
+      { note: 'D3', freq: 146.83, type: 'white' },
+      { note: 'D#3', freq: 155.56, type: 'black' },
+      { note: 'E3', freq: 164.81, type: 'white' },
+      { note: 'F3', freq: 174.61, type: 'white' },
+      { note: 'F#3', freq: 185.00, type: 'black' },
+      { note: 'G3', freq: 196.00, type: 'white' },
+      { note: 'G#3', freq: 207.65, type: 'black' },
+      { note: 'A3', freq: 220.00, type: 'white' },
+      { note: 'A#3', freq: 233.08, type: 'black' },
+      { note: 'B3', freq: 246.94, type: 'white' },
+
+      { note: 'C4', freq: 261.63, type: 'white' },
+      { note: 'C#4', freq: 277.18, type: 'black' },
+      { note: 'D4', freq: 293.66, type: 'white' },
+      { note: 'D#4', freq: 311.13, type: 'black' },
+      { note: 'E4', freq: 329.63, type: 'white' },
+      { note: 'F4', freq: 349.23, type: 'white' },
+      { note: 'F#4', freq: 369.99, type: 'black' },
+      { note: 'G4', freq: 392.00, type: 'white' },
+      { note: 'G#4', freq: 415.30, type: 'black' },
+      { note: 'A4', freq: 440.00, type: 'white' },
+      { note: 'A#4', freq: 466.16, type: 'black' },
+      { note: 'B4', freq: 493.88, type: 'white' }
+    ];
+
+    let lastWhiteKey = null;
+
+    notes.forEach((n) => {
+      if (n.type === 'white') {
+        const whiteKey = document.createElement('div');
+        whiteKey.className = 'key white';
+        whiteKey.dataset.freq = n.freq;
+        whiteKey.textContent = n.note;
+        keyboard.appendChild(whiteKey);
+        lastWhiteKey = whiteKey;
+      } else if (n.type === 'black' && lastWhiteKey) {
+        const blackKey = document.createElement('div');
+        blackKey.className = 'key black';
+        blackKey.dataset.freq = n.freq;
+        blackKey.textContent = n.note;
+        lastWhiteKey.appendChild(blackKey);
+      }
+    });
+
+    function playSound(freq) {
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      const oscillator = audioContext.createOscillator();
+      const envelope = audioContext.createGain();
+
+      oscillator.type = waveTypeSelect.value;
+      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+
+      const now = audioContext.currentTime;
+      const currentVol = parseFloat(volumeSlider.value);
+
+      envelope.gain.setValueAtTime(0, now);
+      envelope.gain.linearRampToValueAtTime(currentVol, now + 0.02);
+      envelope.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+      oscillator.connect(envelope);
+      envelope.connect(gainNode);
+
+      oscillator.start(now);
+      oscillator.stop(now + 0.6);
+    }
+
+    function playScale(scaleNotes) {
+      scaleNotes.forEach((note, index) => {
+        if(!note) return;
+        setTimeout(() => {
+          let key = keyboard.querySelector(`[data-freq="${note.freq}"]`);
+          if (key) {
+            key.classList.add('active');
+            setTimeout(() => key.classList.remove('active'), 400);
+          }
+          playSound(note.freq);
+        }, index * 500);
+      });
+    }
+
+    keyboard.addEventListener('mousedown', (e) => {
+      if (e.target.classList.contains('key')) {
+        const freq = parseFloat(e.target.dataset.freq);
+        playSound(freq);
+      }
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      gainNode.gain.value = e.target.value;
+    });
+
+    document.getElementById('play-major').addEventListener('click', () => {
+      const majorScale = [
+        notes.find(n => n.note === 'C3'),
+        notes.find(n => n.note === 'D3'),
+        notes.find(n => n.note === 'E3'),
+        notes.find(n => n.note === 'G3'),
+        notes.find(n => n.note === 'A3')
+      ];
+      playScale(majorScale);
+    });
+
+    document.getElementById('play-minor').addEventListener('click', () => {
+      const minorScale = [
+        notes.find(n => n.note === 'C3'),
+        notes.find(n => n.note === 'D#3'),
+        notes.find(n => n.note === 'F3'),
+        notes.find(n => n.note === 'G3'),
+        notes.find(n => n.note === 'A#3')
+      ];
+      playScale(minorScale);
+    });
+
+    let score = 0;
+    let currentChallenge = null;
+
+    document.getElementById('start-challenge').addEventListener('click', () => {
+      const randomScaleType = Math.random() > 0.5 ? 'major' : 'minor';
+      const randomTonicIndex = Math.floor(Math.random() * 12); 
+      const tonic = notes[randomTonicIndex];
+
+      if (randomScaleType === 'major') {
+        currentChallenge = {
+          type: 'major',
+          scale: [
+            tonic,
+            notes[randomTonicIndex + 2],
+            notes[randomTonicIndex + 4],
+            notes[randomTonicIndex + 7],
+            notes[randomTonicIndex + 9]
+          ]
+        };
+      } else {
+        currentChallenge = {
+          type: 'minor',
+          scale: [
+            tonic,
+            notes[randomTonicIndex + 3],
+            notes[randomTonicIndex + 5],
+            notes[randomTonicIndex + 7],
+            notes[randomTonicIndex + 10]
+          ]
+        };
+      }
+
+      playScale(currentChallenge.scale);
+
+      const msg = document.getElementById('challenge-message');
+      msg.style.color = '#0056b3'; // Azul inicial
+      msg.textContent = `Escucha la escala e intenta adivinar si es Mayor o Menor.`;
+    });
+
+    document.getElementById('guess-major').addEventListener('click', () => {
+      if (!currentChallenge) return;
+      const msg = document.getElementById('challenge-message');
+
+      if (currentChallenge.type === 'major') {
+        score++;
+        msg.style.color = '#28a745'; // VERDE para acierto
+        msg.textContent = `¡Correcto! Era una Pentatónica Mayor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;
+      } else {
+        msg.style.color = '#dc3545'; // ROJO para fallo
+        msg.textContent = `Incorrecto. Era una Pentatónica Menor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;
+      }
+      currentChallenge = null;
+    });
+
+    document.getElementById('guess-minor').addEventListener('click', () => {
+      if (!currentChallenge) return;
+      const msg = document.getElementById('challenge-message');
+
+      if (currentChallenge.type === 'minor') {
+        score++;
+        msg.style.color = '#28a745'; // VERDE para acierto
+        msg.textContent = `¡Correcto! Era una Pentatónica Menor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;
+      } else {
+        msg.style.color = '#dc3545'; // ROJO para fallo
+        msg.textContent = `Incorrecto. Era una Pentatónica Mayor iniciada en ${currentChallenge.scale[0].note}. Puntos: ${score}`;
+      }
+      currentChallenge = null;
+    });
+  </script>
 </body>
 </html>

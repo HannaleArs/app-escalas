@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reconocimiento de Intervalos - Teclado Virtual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    /* Menú de Navegación superior */
+    nav {
+      background: #333;
+      width: 100%;
+      max-width: 800px;
+      padding: 10px 0;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      background: #007bff;
+    }
+
+    h1 {
+      margin: 10px 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    #controls {
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    select, input[type="range"] {
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    #keyboard {
+      position: relative;
+      display: flex;
+      margin: 20px 0;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .key {
+      border: 1px solid #ccc;
+      border-radius: 0 0 5px 5px;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 10px;
+      box-sizing: border-box;
+      font-weight: bold;
+      transition: background-color 0.1s ease;
+    }
+
+    .white {
+      background: #fff;
+      width: 45px;
+      height: 180px;
+      margin: 0 1px;
+      z-index: 1;
+      color: #333;
+      font-size: 12px;
+    }
+
+    .white:hover, .white.active {
+      background: #e0e0e0;
+    }
+
+    .black {
+      background: #111;
+      color: #fff;
+      width: 28px;
+      height: 110px;
+      position: absolute;
+      top: 0;
+      right: -15px;
+      z-index: 10;
+      border-radius: 0 0 3px 3px;
+      font-size: 10px;
+      padding-bottom: 8px;
+      border: 1px solid #000;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .black:hover, .black.active {
+      background: #444;
+    }
+
+    #info, #challenge {
+      margin-top: 20px;
+      text-align: center;
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .interval-buttons {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 12px;
+      font-size: 13px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #333;
+      color: #fff;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    #challenge-message {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navegación entre la app principal y el nuevo módulo -->
+  <nav>
+    <a href="index.html">Escalas Pentatónicas</a>
+    <a href="intervalos.html" class="active">Desafío de Intervalos</a>
+  </nav>
+
+  <h1>Teclado Virtual - Entrenamiento de Intervalos</h1>
+
+  <div id="controls">
+    <label for="waveType">Forma de onda:</label>
+    <select id="waveType">
+      <option value="sine">Senoidal</option>
+      <option value="square">Cuadrada</option>
+      <option value="triangle">Triangular</option>
+      <option value="sawtooth">Dientes de sierra</option>
+    </select>
+
+    <label for="volume">Volumen:</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <div id="keyboard"></div>
+
+  <!-- Sección de Explicación Teórica -->
+  <div id="info">
+    <h2>¿Qué es un Intervalo Musical?</h2>
+    <p>Es la distancia de altura (frecuencia) entre dos notas. Se miden en <strong>semitonos</strong>:</p>
+    <p style="font-size: 14px; text-align: left; line-height: 1.6; margin: 0 auto; max-width: 600px;">
+      • <strong>2ª Menor:</strong> 1 semitono | <strong>2ª Mayor:</strong> 2 semitonos<br>
+      • <strong>3ª Menor:</strong> 3 semitonos | <strong>3ª Mayor:</strong> 4 semitonos<br>
+      • <strong>4ª Justa:</strong> 5 semitonos | <strong>5ª Justa:</strong> 7 semitonos<br>
+      • <strong>6ª Mayor:</strong> 9 semitonos | <strong>7ª Mayor:</strong> 11 semitonos<br>
+      • <strong>8ª Justa (Octava):</strong> 12 semitonos
+    </p>
+  </div>
+
+  <!-- Sección del Modo Desafío -->
+  <div id="challenge">
+    <h2>Modo Desafío de Intervalos</h2>
+    <button id="start-challenge" style="background-color: #007bff; font-size: 15px; padding: 12px 20px;">
+      Escuchar Nuevo Intervalo
+    </button>
+    <button id="repeat-sound" style="background-color: #6c757d; font-size: 13px; padding: 12px 15px; display: none;">
+      🔊 Repetir Sonido
+    </button>
+
+    <div class="interval-buttons" id="answer-buttons" style="display: none;">
+      <button data-semitones="1">2ª Menor</button>
+      <button data-semitones="2">2ª Mayor</button>
+      <button data-semitones="3">3ª Menor</button>
+      <button data-semitones="4">3ª Mayor</button>
+      <button data-semitones="5">4ª Justa</button>
+      <button data-semitones="7">5ª Justa</button>
+      <button data-semitones="9">6ª Mayor</button>
+      <button data-semitones="11">7ª Mayor</button>
+      <button data-semitones="12">8ª Justa</button>
+    </div>
+
+    <p id="challenge-message">Presiona "Escuchar Nuevo Intervalo" para iniciar.</p>
+  </div>
+
+  <script>
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const gainNode = audioContext.createGain();
+    gainNode.connect(audioContext.destination);
+
+    const waveTypeSelect = document.getElementById('waveType');
+    const volumeSlider = document.getElementById('volume');
+    const keyboard = document.getElementById('keyboard');
+
+    const notes = [
+      { note: 'C3', freq: 130.81, type: 'white' },
+      { note: 'C#3', freq: 138.59, type: 'black' },
+      { note: 'D3', freq: 146.83, type: 'white' },
+      { note: 'D#3', freq: 155.56, type: 'black' },
+      { note: 'E3', freq: 164.81, type: 'white' },
+      { note: 'F3', freq: 174.61, type: 'white' },
+      { note: 'F#3', freq: 185.00, type: 'black' },
+      { note: 'G3', freq: 196.00, type: 'white' },
+      { note: 'G#3', freq: 207.65, type: 'black' },
+      { note: 'A3', freq: 220.00, type: 'white' },
+      { note: 'A#3', freq: 233.08, type: 'black' },
+      { note: 'B3', freq: 246.94, type: 'white' },
+      { note: 'C4', freq: 261.63, type: 'white' },
+      { note: 'C#4', freq: 277.18, type: 'black' },
+      { note: 'D4', freq: 293.66, type: 'white' },
+      { note: 'D#4', freq: 311.13, type: 'black' },
+      { note: 'E4', freq: 329.63, type: 'white' },
+      { note: 'F4', freq: 349.23, type: 'white' },
+      { note: 'F#4', freq: 369.99, type: 'black' },
+      { note: 'G4', freq: 392.00, type: 'white' },
+      { note: 'G#4', freq: 415.30, type: 'black' },
+      { note: 'A4', freq: 440.00, type: 'white' },
+      { note: 'A#4', freq: 466.16, type: 'black' },
+      { note: 'B4', freq: 493.88, type: 'white' }
+    ];
+
+    let lastWhiteKey = null;
+
+    notes.forEach((n) => {
+      if (n.type === 'white') {
+        const whiteKey = document.createElement('div');
+        whiteKey.className = 'key white';
+        whiteKey.dataset.freq = n.freq;
+        whiteKey.textContent = n.note;
+        keyboard.appendChild(whiteKey);
+        lastWhiteKey = whiteKey;
+      } else if (n.type === 'black' && lastWhiteKey) {
+        const blackKey = document.createElement('div');
+        blackKey.className = 'key black';
+        blackKey.dataset.freq = n.freq;
+        blackKey.textContent = n.note;
+        lastWhiteKey.appendChild(blackKey);
+      }
+    });
+
+    function playSound(freq) {
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      const oscillator = audioContext.createOscillator();
+      const envelope = audioContext.createGain();
+
+      oscillator.type = waveTypeSelect.value;
+      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+
+      const now = audioContext.currentTime;
+      const currentVol = parseFloat(volumeSlider.value);
+
+      envelope.gain.setValueAtTime(0, now);
+      envelope.gain.linearRampToValueAtTime(currentVol, now + 0.02);
+      envelope.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+      oscillator.connect(envelope);
+      envelope.connect(gainNode);
+
+      oscillator.start(now);
+      oscillator.stop(now + 0.6);
+    }
+
+    function playInterval(note1, note2) {
+      // Toca la primera nota
+      let key1 = keyboard.querySelector(`[data-freq="${note1.freq}"]`);
+      if (key1) {
+        key1.classList.add('active');
+        setTimeout(() => key1.classList.remove('active'), 500);
+      }
+      playSound(note1.freq);
+
+      // Toca la segunda nota 600ms después
+      setTimeout(() => {
+        let key2 = keyboard.querySelector(`[data-freq="${note2.freq}"]`);
+        if (key2) {
+          key2.classList.add('active');
+          setTimeout(() => key2.classList.remove('active'), 500);
+        }
+        playSound(note2.freq);
+      }, 600);
+    }
+
+    keyboard.addEventListener('mousedown', (e) => {
+      if (e.target.classList.contains('key')) {
+        const freq = parseFloat(e.target.dataset.freq);
+        playSound(freq);
+      }
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      gainNode.gain.value = e.target.value;
+    });
+
+    // Lógica del Desafío de Intervalos
+    let score = 0;
+    let currentChallenge = null;
+    const intervalNames = {
+      1: "2ª Menor",
+      2: "2ª Mayor",
+      3: "3ª Menor",
+      4: "3ª Mayor",
+      5: "4ª Justa",
+      7: "5ª Justa",
+      9: "6ª Mayor",
+      11: "7ª Mayor",
+      12: "8ª Justa"
+    };
+
+    const allowedSemitones = [1, 2, 3, 4, 5, 7, 9, 11, 12];
+
+    document.getElementById('start-challenge').addEventListener('click', generateChallenge);
+    document.getElementById('repeat-sound').addEventListener('click', () => {
+      if (currentChallenge) {
+        playInterval(currentChallenge.note1, currentChallenge.note2);
+      }
+    });
+
+    function generateChallenge() {
+      const isAscending = Math.random() > 0.5;
+      const semitones = allowedSemitones[Math.floor(Math.random() * allowedSemitones.length)];
+
+      let index1, index2;
+
+      if (isAscending) {
+        // Ascendente: nota 1 más baja
+        index1 = Math.floor(Math.random() * (notes.length - semitones));
+        index2 = index1 + semitones;
+      } else {
+        // Descendente: nota 1 más alta
+        index1 = Math.floor(Math.random() * (notes.length - semitones)) + semitones;
+        index2 = index1 - semitones;
+      }
+
+      currentChallenge = {
+        note1: notes[index1],
+        note2: notes[index2],
+        semitones: semitones,
+        direction: isAscending ? "Ascendente" : "Descendente"
+      };
+
+      playInterval(currentChallenge.note1, currentChallenge.note2);
+
+      const msg = document.getElementById('challenge-message');
+      msg.style.color = '#0056b3';
+      msg.textContent = `Intervalo ${currentChallenge.direction}: ¿Qué intervalo escuchaste?`;
+
+      document.getElementById('answer-buttons').style.display = 'grid';
+      document.getElementById('repeat-sound').style.display = 'inline-block';
+    }
+
+    // Escuchar respuestas
+    document.querySelectorAll('#answer-buttons button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        if (!currentChallenge) return;
+
+        const selectedSemitones = parseInt(e.target.dataset.semitones);
+        const msg = document.getElementById('challenge-message');
+
+        if (selectedSemitones === currentChallenge.semitones) {
+          score++;
+          msg.style.color = '#28a745';
+          msg.textContent = `¡Correcto! Era una ${intervalNames[currentChallenge.semitones]} (${currentChallenge.direction}) desde ${currentChallenge.note1.note} a ${currentChallenge.note2.note}. Puntos: ${score}`;
+        } else {
+          msg.style.color = '#dc3545';
+          msg.textContent = `Incorrecto. Era una ${intervalNames[currentChallenge.semitones]} (${currentChallenge.direction}) desde ${currentChallenge.note1.note} a ${currentChallenge.note2.note}. Puntos: ${score}`;
+        }
+
+        currentChallenge = null;
+      });
+    });
+  </script>
+</body>
+</html>
